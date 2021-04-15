@@ -72,7 +72,7 @@ vector<int> LinuxParser::Pids() {
 
 // DONE: Read and return the system memory utilization
 float LinuxParser::MemoryUtilization() {
-  float memory_utilization, mem_free, mem_total, mem_available, buffers;
+  float memory_utilization, mem_free, mem_total, buffers;
   string line, name_field, value;
   std::ifstream filestream(kProcDirectory + kMeminfoFilename);
   if (filestream.is_open()) {
@@ -81,7 +81,7 @@ float LinuxParser::MemoryUtilization() {
       linestream >> name_field >> value;
       if (name_field == "MemTotal:") mem_total = stof(value);
       if (name_field == "MemFree:") mem_free = stof(value);
-      if (name_field == "MemAvailable:") mem_available = stof(value);
+      // if (name_field == "MemAvailable:") mem_available = stof(value);
       if (name_field == "Buffers:") buffers = stof(value);
     }
     memory_utilization = 1.0 - (mem_free / (mem_total - buffers));
@@ -221,7 +221,6 @@ string LinuxParser::Uid(int pid) {
 string LinuxParser::User(int pid) {
   string uid = Uid(pid);
   string line, User, field_name, value;
-  int i=0;
   std::ifstream filestream(kPasswordPath);
   if (filestream.is_open()) {
     while (std::getline(filestream, line)) {
@@ -229,8 +228,8 @@ string LinuxParser::User(int pid) {
         User = line.substr(0, (line.find(':')));
       }
     }
-    return User;
   }
+  return User;
 }
 
 // DONE: Read and return the uptime of a process
