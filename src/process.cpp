@@ -16,7 +16,7 @@ Process::Process(int pid_) : pid(pid_) {}
 // DONE: Return this process's ID
 int Process::Pid() { return this->pid; }
 
-// TODO: Return this process's CPU utilization
+// DONE: Return this process's CPU utilization
 float Process::CpuUtilization() { return LinuxParser::CpuUtilization(Pid()); }
 
 //DONE: Return the command that generated this process
