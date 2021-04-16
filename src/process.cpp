@@ -17,7 +17,7 @@ Process::Process(int pid_) : pid(pid_) {}
 int Process::Pid() { return this->pid; }
 
 // DONE: Return this process's CPU utilization
-float Process::CpuUtilization() { return LinuxParser::CpuUtilization(Pid()); }
+float Process::CpuUtilization() { return cpu_utilization=LinuxParser::CpuUtilization(Pid()); }
 
 //DONE: Return the command that generated this process
 string Process::Command() { return LinuxParser::Command(Pid()); }
@@ -33,5 +33,5 @@ long int Process::UpTime() { return LinuxParser::UpTime(Pid()); }
 
 // Done?
 bool Process::operator<(Process const& a) const {
-  return a.pid < this->pid ? a.pid : this->pid;
+  return a.cpu_utilization < this->cpu_utilization ? a.cpu_utilization : this->cpu_utilization;
 }

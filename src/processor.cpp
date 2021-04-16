@@ -6,16 +6,16 @@
 
 using std::string;
 using namespace LinuxParser;
-using std::stof;
+using std::stod;
 
 // Done: Return the aggregate CPU utilization
-float Processor::Utilization() {
-  float utilization;
+double Processor::Utilization() {
+  double utilization;
   string line, name_field, value;
-  std::vector<float>
+  std::vector<double>
       CpuData;  //[0]user, [1]nice, [2]system, [3]idle, [4]iowait, [5]irq,
                 // [6]softirq, [7]steal, [8]guest, [9]guest_nice;
-  std::vector<float> PreviousCpuData;
+  std::vector<double> PreviousCpuData;
 
  
 
@@ -26,7 +26,7 @@ float Processor::Utilization() {
     Previousfilestream >> name_field;
     if (name_field == "cpu") {
       while (Previousfilestream >> value) {
-        PreviousCpuData.push_back(stof(value));
+        PreviousCpuData.push_back(stod(value));
       }
     }
   }
@@ -39,31 +39,31 @@ float Processor::Utilization() {
     linestream >> name_field;
     if (name_field == "cpu") {
       while (linestream >> value) {
-        CpuData.push_back(stof(value));
+        CpuData.push_back(stod(value));
       }
     }
   }
 
-  float PrevIdle =
+  double PrevIdle =
       PreviousCpuData[3] + PreviousCpuData[4];  // previdle + previowait
-  float Idle = CpuData[3] + CpuData[4];         // idle + iowait
+  double Idle = CpuData[3] + CpuData[4];         // idle + iowait
 
-  float PrevNonIdle = PreviousCpuData[0] + PreviousCpuData[1] +
+  double PrevNonIdle = PreviousCpuData[0] + PreviousCpuData[1] +
                       PreviousCpuData[2] + PreviousCpuData[5] +
                       PreviousCpuData[6] +
                       PreviousCpuData[7];  // prevuser + prevnice + prevsystem +
                                            // previrq + prevsoftirq + prevsteal
 
-  float NonIdle = CpuData[0] + CpuData[1] + CpuData[2] + CpuData[5] +
+  double NonIdle = CpuData[0] + CpuData[1] + CpuData[2] + CpuData[5] +
                   CpuData[6] +
                   CpuData[7];  // user + nice + system + irq + softirq + steal
 
-  float PrevTotal = PrevIdle + PrevNonIdle;
-  float Total = Idle + NonIdle;
+  double PrevTotal = PrevIdle + PrevNonIdle;
+  double Total = Idle + NonIdle;
 
   // differentiate: actual value minus the previous one
-  float totald = Total - PrevTotal;
-  float idled = Idle - PrevIdle;
+  double totald = Total - PrevTotal;
+  double idled = Idle - PrevIdle;
 
   utilization = (totald - idled) / totald;
 

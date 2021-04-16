@@ -3,9 +3,10 @@
 
 int main() {
   System system;
-  system.Cpu();
+  //system.MemoryUtilization();
+  //system.Cpu();
   //Process process(system.Processes().front());
-    // Process process(1651);
-    // process.User();
+  //Process process(1651);
+  //process.CpuUtilization();
   NCursesDisplay::Display(system);
 }

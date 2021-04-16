@@ -11,25 +11,20 @@
 #include "process.h"
 #include "processor.h"
 
-using std::set;
-using std::size_t;
-using std::string;
-using std::vector;
+using namespace std;
 
 // DONE: Return the system's CPU
-Processor& System::Cpu() { 
-    cpu_.Utilization();
-    return cpu_; }
+Processor& System::Cpu() {
+  cpu_.Utilization();
+  return cpu_;
+}
 
 // DONE: Return a container composed of the system's processes
 vector<Process>& System::Processes() {
-  vector<int> pids = LinuxParser::Pids();
-  while (!pids.empty()) {
-    Process Process(pids.back());
-    processes_.push_back(Process);
-    pids.pop_back();
+  const vector<int>& pids = LinuxParser::Pids();
+  for (const int& pid : pids) {
+    processes_.emplace_back(pid);
   }
-
   return processes_;
 }
 
